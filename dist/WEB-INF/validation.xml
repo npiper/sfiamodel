@@ -1,0 +1,72 @@
+<form-validation>
+
+ <global>
+
+  <constant>
+
+   <constant-name>phone</constant-name>
+
+   <constant-value>^\(?(\d{3})\)?[-| ]?(\d{3})[-| ]?(\d{4})$</constant-value>
+
+  </constant>                    
+
+ </global>
+
+ <formset>   
+
+       <form name="logonForm">
+
+       <field property="username" depends="required,minlength">
+
+         <arg0 key="logonForm.username" />
+
+         <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+
+          <var>
+
+             <var-name>minlength</var-name>
+
+             <var-value>5</var-value>
+
+          </var>
+
+       </field>
+
+         <field property="password" depends="required">
+
+           <arg0 key="logonForm.password" />
+
+       </field>
+
+       </form>    
+
+
+       <form name="createUserBaselineForm">
+
+       <field property="username" depends="required,minlength">
+
+         <arg0 key="createUserBaselineForm.username" />
+
+         <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+
+          <var>
+
+             <var-name>minlength</var-name>
+
+             <var-value>5</var-value>
+
+          </var>
+
+       </field>
+
+         <field property="baselineName" depends="required">
+
+           <arg0 key="createUserBaselineForm.baselineName" />
+
+       </field>
+
+       </form>  
+  </formset>   
+
+</form-validation>
+

@@ -1,0 +1,12 @@
+drop table usr;
+
+set scan off;
+
+create table USR(
+  USER_ID VARCHAR2(120) NOT NULL,
+  CONSTRAINT TABLE_USER_PK PRIMARY KEY (USER_ID)
+);
+
+INSERT INTO USR (USER_ID) VALUES ( 'train01' );
+INSERT INTO USR (USER_ID) VALUES ( 'train02' );
+INSERT INTO USR (USER_ID) VALUES ( 'train03' );

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
+	     xmlns:tx="http://www.springframework.org/schema/tx"
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	<!-- more bean definitions go here... -->
+	
+	<bean id="Skill" class="com.piperit.sfia.domain.Skill" factory-bean="factoryBean" factory-method="createSkill" scope="prototype"></bean>
+
+	<bean id="factoryBean" class="com.piperit.sfia.factory.SpringFactory"></bean>
+
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName"><value>oracle.jdbc.OracleDriver</value></property>
+      <property name="url">
+        <value>jdbc:oracle:thin:@localhost:1521:ORCL</value>
+      </property>
+      <property name="username"><value>scarab</value></property>
+      <property name="password"><value>scarab</value></property>
+    </bean>
+
+    <bean id="skillDAO" class="com.piperit.sfia.domain.dao.impl.SkillDAOJdbc">
+        <!-- reference to the JDBC connection -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+    
+    <bean id="skillLevelDAO" class="com.piperit.sfia.domain.dao.impl.SkillLevelDAOJDBC">
+        <!-- reference to the JDBC connection -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+
+    <bean id="userDAO" class="com.piperit.sfia.domain.dao.impl.UserDAOJdbc">
+        <!-- reference to the JDBC connection -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+
+    <bean id="roleDAO" class="com.piperit.sfia.domain.dao.impl.RoleDAOJdbc">
+        <!-- reference to the JDBC connection -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+
+    <bean id="userSkillBaselineDAO" class="com.piperit.sfia.domain.dao.impl.UserSkillBaselineDAOImpl">
+        <!-- reference to the JDBC connection -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+
+
+</beans>

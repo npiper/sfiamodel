@@ -1,0 +1,48 @@
+<!DOCTYPE tiles-definitions PUBLIC
+   "-//Apache Software Foundation//DTD Tiles Configuration//EN"
+   "http://jakarta.apache.org/struts/dtds/tiles-config.dtd">
+
+<!--
+	  Copyright (c) 2005, PLM Services and Product Lifecycle Management (Australasia) Pty Ltd
+	  @author west, @created 9 December 2005, $Id: tiles.xml,v 1.5 2007/08/07 09:38:37 Piper Exp $
+-->     
+
+<tiles-definitions>
+
+  <definition name="entryPage" path="/jsp/tilesLayout.jsp">
+	  <put name="header"  value="../jsp/header.jsp"/>
+	  <put name="headerMenuBar" value="/jsp/headermenubar.jsp"/>
+	  <put name="menu"    value="../jsp/menu.jsp"/>
+	  <put name="content" value="../jsp/listSkills.jsp"/>
+  </definition>
+  
+  
+    <definition name="showSkill" extends="entryPage">
+        <put name="content" value="/jsp/showSkillDetail.jsp"/>
+    </definition>
+    
+    <definition name="listUsers" extends="entryPage">
+        <put name="content" value="/jsp/listUsers.jsp"/>
+    </definition>
+    
+    <definition name="listRoles" extends="entryPage">
+        <put name="content" value="/jsp/listRoles.jsp"/>
+    </definition>
+    
+   <definition name="showUserBaseline" extends="entryPage">
+        <put name="content" value="/jsp/userSkillBaseline.jsp"/>
+    </definition>
+    
+       <definition name=".tile.createUser" extends="entryPage">
+        <put name="content" value="/jsp/createUser.jsp"/>
+    </definition>
+    
+    <definition name=".tile.createUserBaselinePage" extends="entryPage">
+        <put name="content" value="/jsp/createNewUserBaseline.jsp"/>
+    </definition>
+    
+   <definition name="actionSuccess" extends="entryPage">
+        <put name="content" value="/jsp/actionSuccess.jsp"/>
+    </definition>
+
+</tiles-definitions>

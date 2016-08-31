@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>         
+
+<!DOCTYPE struts-config PUBLIC
+
+       "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+
+       "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">          
+
+         
+
+<struts-config>
+
+ 
+ <form-beans> 
+
+  <form-bean 
+
+    name="loginForm"
+
+    type="org.apache.struts.action.DynaActionForm">
+
+      <form-property name="username" type="java.lang.String"/>
+
+      <form-property name="password" type="java.lang.String"/>
+
+  </form-bean>
+
+  <form-bean 
+
+    name="createUserForm"
+
+    type="org.apache.struts.action.DynaActionForm">
+
+      <form-property name="username" type="java.lang.String"/>
+
+  </form-bean>
+
+
+  <form-bean 
+
+    name="createUserBaselineForm"
+
+    type="org.apache.struts.action.DynaActionForm">
+
+      <form-property name="username" type="java.lang.String"/>
+      
+      <form-property name="baselineName" type="java.lang.String"/>
+      
+      <form-property name="skillLevels" type="java.util.Collection"/>
+      
+      <form-property name="comments" type="java.lang.String"/>
+
+  </form-bean>
+
+ </form-beans>
+
+
+
+ <global-exceptions>
+
+  <exception 
+
+   key="global.error.invalidlogin"
+
+   path="/security/signin.jsp"
+
+   scope="request"
+
+   type="com.oreilly.struts.framework.exceptions.InvalidLoginException"/>  
+
+ </global-exceptions>
+
+
+
+ <global-forwards>
+
+  <forward name="Login" path="/jsp/login.jsp" redirect="true"/>
+
+  <forward name="SystemFailure" path="/common/systemerror.jsp"/>
+
+  <forward 
+
+   name="SessionTimeOut" 
+
+   path="/common/sessiontimeout.jsp" 
+
+   redirect="true"/>
+
+ </global-forwards>
+
+
+
+ <action-mappings>
+
+<action
+
+   path="/signin"
+
+   type="com.piperit.sfia.struts.actions.LoginAction"
+
+   scope="request"
+
+   name="loginForm"
+
+   validate="true"
+
+   input="/jsp/login.jsp">
+
+   <forward name="Success" path="entryPage" redirect="true"/>
+
+   <forward name="Failure" path="/jsp/login.jsp" redirect="true"/>
+
+ </action>
+ 
+ 
+ <action path="/createUserBaseline" 
+ 
+   type="com.piperit.sfia.struts.actions.CreateUserBaselineAction"
+
+   scope="request"
+
+   name="createUserBaselineForm"
+
+   validate="false"
+
+   input=".tile.createUserBaselinePage">
+
+   <forward name="Success" path=".tile.createUserBaselinePage" redirect="true"/>
+
+   <forward name="Failure" path=".tile.createUserBaselinePage" redirect="true"/>
+
+ </action>
+ 
+ <action
+
+   path="/createUser"
+
+   type="com.piperit.sfia.struts.actions.CreateUserAction"
+
+   scope="request"
+
+   name="createUserForm"
+
+   validate="true"
+
+   input=".tile.createUser">
+
+   <forward name="Success" path="actionSuccess" redirect="true"/>
+
+   <forward name="Failure" path=".tile.createUser" redirect="true"/>
+
+ </action>
+ 
+<action path="/listActiveSkills" forward ="entryPage"/>
+
+<action path="/listRoles" forward ="listRoles"/>
+
+<action path="/createBaselineStep1" forward=".tile.createUserBaselinePage"/>
+
+<action
+
+   path="/showSkill"
+
+   type="com.piperit.sfia.struts.actions.ShowSkillAction"
+
+   scope="request">
+   
+   <forward name="Success" path="showSkill" redirect="true"/>
+
+   <forward name="Failure" path="entryPage" redirect="true"/>
+
+ </action>
+ 
+ 
+ 
+ <action
+
+   path="/listUsers"
+
+   type="com.piperit.sfia.struts.actions.ListUsersAction"
+
+   scope="request">
+   
+   <forward name="Success" path="listUsers" redirect="true"/>
+
+   <forward name="Failure" path="entryPage" redirect="true"/>
+
+ </action>
+ 
+  
+ <action
+
+   path="/showBaseline"
+
+   type="com.piperit.sfia.struts.actions.ShowUserBaselineAction"
+
+   scope="request">
+   
+   <forward name="Success" path="showUserBaseline" redirect="true"/>
+
+   <forward name="Failure" path="entryPage" redirect="true"/>
+
+ </action>  
+  
+  </action-mappings>
+
+  
+
+ <message-resources 
+
+  parameter="SFIAMessageResources" 
+
+  null="false"/>
+
+ <message-resources 
+
+  key="IMAGE_RESOURCE_KEY" 
+
+  parameter="SFIAImageResources" 
+
+  null="false"/> 
+
+ 
+ <plug-in
+
+  className="org.apache.struts.validator.ValidatorPlugIn">
+
+   <set-property 
+
+     property="pathnames" 
+
+     value="/WEB-INF/validation-rules.xml,/WEB-INF/validation.xml"/>
+
+ </plug-in>
+ 
+ <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+
+  <set-property property="definitions-config" value="/WEB-INF/tiles.xml" />
+
+  <set-property property="definitions-debug" value="2" />
+
+  <set-property property="definitions-parser-details" value="2" />
+
+  <set-property property="definitions-parser-validate" value="true" />
+
+  <set-property property="moduleAware" value="true" />
+
+</plug-in>
+
+</struts-config>

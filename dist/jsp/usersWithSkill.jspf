@@ -1,0 +1,24 @@
+<%@ page contentType="text/html" %>
+<%@ taglib uri="/WEB-INF/tld/c.tld" prefix="c" %>
+<%@ taglib uri="/WEB-INF/tld/sql.tld" prefix="sql" %>
+
+<bean:define id="skillID" name="skill" property="skillID" type="java.lang.String"/>
+
+
+<sql:query var="rs" dataSource="jdbc/SfiaDb">
+select user_id,skill_id,level_number from 
+      USER_SKILL_BASELINE_ITEM,USER_SKILL_BASELINE
+      where USER_SKILL_BASELINE_ITEM.SKILL_ID = ? AND 
+      USER_SKILL_BASELINE.LATEST = 'Y'
+      AND USER_SKILL_BASELINE.USER_BASELINE_ID =
+      USER_SKILL_BASELINE_ITEM.USER_BASELINE_ID
+   <sql:param value="${skillID}" />    
+</sql:query>
+
+<TABLE border="1">
+<TR><TD COLSPAN="3"><h3>Users with <%= skillID %></h3></TD></TR>
+<TR><TD></TD><TD>User</TD><TD>Level</TD></TR>
+<c:forEach var="row" items="${rs.rows}">
+  <TR><TD><img src="/SFIA/images/ico_user.gif"/></TD><TD>${row.user_id}</TD><TD>${row.level_number}</TD></TR>
+</c:forEach>
+</TABLE>

@@ -1,0 +1,161 @@
+<project basedir="." name="SFIA Modeller">
+
+<target name="init">
+    <!-- java.classes
+       The path for the java classes after compile.
+    -->
+    <property name="java.classes" value="${basedir}/bin"/>
+
+
+    <!-- war.path
+       This it the path to the custom war file that will be generated.
+       You may wish to change this to be directly below your web application
+       server if you wish to run from a war file for testing.
+       Example:
+          <property name="war.path"
+                    value="D:\jakarta-tomcat\webbapps\${custom.war.file}"/>
+    -->
+    <property name="war.path" value="${basedir}/SFIA.war"/>
+	
+    <!-- dist.home
+       This is the path to copy web application file to prior to creating the
+       war file.  Some web application servers, such as Tomcat and WebLogic
+       allow you to deploy directly under the web app server.  This can be
+       usefull for quickly testing changes.
+       Example:
+    -->
+    <property name="dist.home" value="${basedir}/dist"/>
+
+    <!-- web.dir
+       The location of JSP and other web source files.
+    -->
+    <property name="web.dir" value="${basedir}/src/web"/>
+
+
+    <!-- java.source
+        The path to the java source code files.
+     -->
+     <property name="java.source" value="${basedir}/src/java"/>
+	
+    <!-- webinf.dir
+       The location of the WEB-INF directory.
+    -->
+    <property name="webinf.dir" value="${basedir}/web/WEB-INF"/>
+
+
+    <!-- lib.dir
+       The location of the lib directory.  The custom jar will be placed in
+       this directory.
+    -->
+    <property name="lib.dir" value="${webinf.dir}/lib" />
+	
+	
+    <!-- jar.path
+       The path to the custom jar file that will be created.
+    -->
+    <property name="jar.path"
+                        value="${lib.dir}/SFIAClasses.jar"/>
+
+	
+	<property name="servlet.jar.home" value="C:\applications\bea81\weblogic81\server\lib"/>
+	
+	
+</target>
+	
+<target name="prepare" depends="init"
+	           description="Create appropriate directories if they do not exist">
+
+	      <!--
+	         Initialize custom root as a convenience if it isn't already created.
+	         These directories will not be removed by the clean target.
+	      -->
+
+
+	      <!-- These will be removed by a clean -->
+	      <mkdir dir="${dist.home}"/>
+	      <mkdir dir="${java.classes}"/>
+
+
+	   </target>
+	
+	
+<target name="compile">
+	  
+    <javac srcdir="${java.source}"
+           destdir="${java.classes}"
+           debug="on"
+           optimize="off"
+           deprecation="on">
+       <classpath>
+          <fileset dir="${lib.dir}">
+             <include name="*.jar"/>
+          </fileset>
+        <fileset dir="${basedir}\lib">
+           <include name="*.jar"/>
+        </fileset>
+       	
+        <fileset dir="${servlet.jar.home}" >
+             <include name="*.jar" />
+          </fileset>
+       </classpath>
+    </javac>
+	
+</target>
+
+	<target name="dist" depends="init,prepare"
+	   	       description="Create the distribution for this web application" >
+		<echo>"Building DIST copying from ${install.war.home} to ${dist.home}..."</echo>
+	      <copy todir="${dist.home}\WEB-INF\lib" >
+	         <fileset dir="${basedir}\lib"/>
+	      </copy>
+		
+		<copy todir="${dist.home}\WEB-INF\classes">
+			<fileset dir="${java.classes}"/>
+		</copy>
+		
+		
+	      <echo>"Building DIST copying from ${web.dir} to ${dist.home}..."</echo>
+	      <copy todir="${dist.home}" overwrite="true" >
+	         <fileset dir="${web.dir}">
+	            <exclude name="**/*Bundle.xml" />
+	            <exclude name="**/*bundle.xml" />
+	            <exclude name="WEB-INF/classes" />
+	         </fileset>
+	         <fileset dir="${web.dir}">
+	            <include name="WEB-INF/classes/**/*" />
+	         </fileset>
+	      	
+	      </copy>
+
+	   	<echo>"Building DIST copying from ${web.dir} to ${dist.home}/WEB-INF/classes..."</echo>
+	      <copy todir="${dist.home}/WEB-INF/classes" >
+	          <fileset dir="${web.dir}">
+	             <include name="**/*Bundle.xml" />
+	             <include name="**/*bundle.xml" />
+	             <exclude name="WEB-INF" />
+	             <exclude name="WEB-INF/**/*" />
+	          </fileset>
+	          <fileset dir="${web.dir}/WEB-INF">
+	             <include name="**/*Bundle.xml" />
+	             <include name="**/*bundle.xml" />
+	             <exclude name="classes" />
+	             <exclude name="classes/**/*" />
+	          </fileset>
+	          <fileset dir="${java.source}">
+	             <include name="**/*Bundle.xml" />
+	             <include name="**/*bundle.xml" />
+	          </fileset>
+	       </copy>
+
+
+	   </target>
+	
+	
+ <target name="mkwar" depends="dist"
+	   	      description="Create the Web ARchive (WAR) file" >
+	      <jar jarfile="${war.path}" basedir="${dist.home}" whenempty="skip" />
+</target>
+	
+
+
+</project>
